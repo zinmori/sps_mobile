@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnboardingPage extends StatelessWidget {
   final String title;
@@ -30,15 +31,21 @@ class OnboardingPage extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.left,
-            style: const TextStyle(
-                fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.red),
+            style: GoogleFonts.roboto(
+              textStyle: const TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red),
+            ),
           ),
           const SizedBox(height: 20.0),
           Text(
             description,
             textAlign: TextAlign.left,
-            style: const TextStyle(fontSize: 20.0),
-          ),
+            style: GoogleFonts.roboto(
+              textStyle: const TextStyle(fontSize: 20.0),
+            ),
+          )
         ],
       ),
     );

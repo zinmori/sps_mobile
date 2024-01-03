@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sps_mobile/screens/auth.dart';
 import 'package:sps_mobile/widgets/on_boarding_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -22,13 +24,21 @@ class _StartScreenState extends State<StartScreen> {
         backgroundColor: Colors.white,
         actions: [
           TextButton(
-            onPressed: () {},
-            child: const Text(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const Auth(),
+                ),
+              );
+            },
+            child: Text(
               'SKIP',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.red,
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.roboto(
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -84,7 +94,7 @@ class _StartScreenState extends State<StartScreen> {
                     },
                     child: const Icon(
                       Icons.arrow_back_ios_new,
-                      size: 30,
+                      size: 25,
                       color: Colors.white,
                     ),
                   ),
@@ -94,8 +104,8 @@ class _StartScreenState extends State<StartScreen> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Container(
-                        width: 15,
-                        height: 15,
+                        width: 10,
+                        height: 10,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color:
@@ -115,7 +125,7 @@ class _StartScreenState extends State<StartScreen> {
                         ),
                         child: const Icon(
                           Icons.arrow_forward_ios,
-                          size: 30,
+                          size: 25,
                           color: Colors.white,
                         ),
                         onPressed: () {
@@ -128,13 +138,21 @@ class _StartScreenState extends State<StartScreen> {
                         },
                       )
                     : TextButton(
-                        onPressed: () {},
-                        child: const Text(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const Auth(),
+                            ),
+                          );
+                        },
+                        child: Text(
                           'Débuter',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
+                          style: GoogleFonts.roboto(
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
