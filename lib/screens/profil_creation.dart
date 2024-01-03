@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sps_mobile/screens/login.dart';
-import 'package:sps_mobile/screens/sign_up.dart';
+import 'package:sps_mobile/screens/tabs.dart';
 
 class ProfilCreation extends StatefulWidget {
   const ProfilCreation({super.key});
@@ -207,15 +206,17 @@ class _ProfilCreationState extends State<ProfilCreation> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (ctx) => const SignUp(),
+                      builder: (ctx) => const Tabs(),
                     ),
                   );
                 },
                 child: Text(
                   'Confirmer',
                   style: GoogleFonts.openSans(
-                    textStyle:
-                        const TextStyle(fontSize: 16, color: Colors.white),
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
