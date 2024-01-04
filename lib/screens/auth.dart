@@ -34,58 +34,53 @@ class Auth extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 50),
-          Container(
-            width: 200,
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              elevation: 5,
+              minimumSize: const Size(200, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (ctx) => const SignUp(),
-                  ),
-                );
-              },
-              child: Text(
-                'S\'inscrire',
-                style: GoogleFonts.roboto(
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => const SignUp(),
+                ),
+              );
+            },
+            child: Text(
+              'S\'inscrire',
+              style: GoogleFonts.roboto(
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
           ),
           const SizedBox(height: 20),
-          Container(
-            width: 200,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.red,
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(20),
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => const Login(),
+                ),
+              );
+            },
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(width: 2, color: Colors.red),
+              minimumSize: const Size(200, 50),
             ),
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (ctx) => const Login(),
-                  ),
-                );
-              },
-              child: Text(
-                'Se connecter',
-                style: GoogleFonts.roboto(
-                  textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                  ),
+            child: Text(
+              'Se connecter',
+              style: GoogleFonts.roboto(
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
                 ),
               ),
             ),

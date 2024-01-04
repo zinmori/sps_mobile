@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sps_mobile/screens/histo_screen.dart';
+import 'package:sps_mobile/screens/info_screen.dart';
 import 'package:sps_mobile/screens/planning.dart';
+import 'package:sps_mobile/screens/profil_screen.dart';
+import 'package:sps_mobile/screens/urgence_screen.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -24,6 +29,9 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shadowColor: Colors.red,
+        elevation: 5,
+        scrolledUnderElevation: 10,
         title: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +39,7 @@ class _TabsState extends State<Tabs> {
               Image.asset('assets/images/logo.png', height: 40, width: 40),
               Text(
                 titles[currenTPageIndex],
-                style: const TextStyle(
+                style: GoogleFonts.openSans(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                 ),
@@ -40,20 +48,19 @@ class _TabsState extends State<Tabs> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: Center(
         child: [
           const Planning(),
-          const Text('page 2'),
-          const Text('page 3'),
-          const Text('page 4'),
-          const Text('page 5'),
+          const InfoScreen(),
+          const HistoScreen(),
+          const UrgenceScreen(),
+          const ProfilScreen(),
         ][currenTPageIndex],
       ),
       bottomNavigationBar: NavigationBar(
         shadowColor: Colors.red,
         indicatorColor: Colors.red,
-        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         elevation: 10,
         destinations: [

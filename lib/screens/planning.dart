@@ -102,6 +102,92 @@ class _PlanningState extends State<Planning> {
     );
   }
 
+  Future<void> _showVerificationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          //title: const Text('Confirmation'),
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+
+          content: Text(
+            'La date programmée précédemment est déjà passée avez vous honoré votre engagement ?',
+            style: GoogleFonts.openSans(
+              textStyle: const TextStyle(fontSize: 18),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Text(
+                        'Ce n\'est pas grave, vous pouvez toujours programmer un nouveau don.',
+                        style: GoogleFonts.openSans(
+                          textStyle: const TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: const Text('NON, je n\'ai pas pu',
+                  style: TextStyle(color: Colors.red)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Row(
+                        children: [
+                          Image.asset(
+                            'assets/images/superblood.png',
+                            width: 60,
+                          ),
+                          Text(
+                            'Continuez comme ça !',
+                            style: GoogleFonts.openSans(
+                              textStyle: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+              ),
+              child: const Text('OUI', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showVerificationDialog();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return hasAppointment
@@ -218,7 +304,7 @@ class _PlanningState extends State<Planning> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    elevation: 0,
+                    elevation: 5,
                     fixedSize: const Size(150, 50),
                     backgroundColor: Colors.red,
                     shape: RoundedRectangleBorder(
@@ -243,11 +329,12 @@ class _PlanningState extends State<Planning> {
 }
 
 class ShowAppointment extends StatelessWidget {
-  const ShowAppointment(
-      {super.key,
-      required this.centre,
-      required this.date,
-      required this.delete});
+  const ShowAppointment({
+    super.key,
+    required this.centre,
+    required this.date,
+    required this.delete,
+  });
   final String centre;
   final String date;
   final void Function()? delete;

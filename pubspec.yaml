@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.3.7
   google_fonts: ^6.1.0
+  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,7 @@ flutter:
     - assets/images/logo.png
     - assets/images/logo1.png
     - assets/images/blood-donation.png
+    - assets/images/superblood.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

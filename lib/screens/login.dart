@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sps_mobile/screens/profil_creation.dart';
 import 'package:sps_mobile/screens/sign_up.dart';
+import 'package:sps_mobile/screens/tabs.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -85,7 +85,7 @@ class Login extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (ctx) => const ProfilCreation(),
+                      builder: (ctx) => const Tabs(),
                     ),
                   );
                 },
@@ -125,7 +125,7 @@ class Login extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (ctx) => const ProfilCreation(),
+                          builder: (ctx) => const Tabs(),
                         ),
                       );
                     },

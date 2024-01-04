@@ -13,6 +13,7 @@ class _ProfilCreationState extends State<ProfilCreation> {
   int selectedGenre = 1;
   List<String> listSanguin = ['O+', 'A+', 'B+', 'AB+', 'O-', 'A-', 'B-', 'AB-'];
   String selectedValue = 'O+';
+  DateTime? date;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,11 +98,21 @@ class _ProfilCreationState extends State<ProfilCreation> {
                       Icons.calendar_today_rounded,
                       color: Colors.red,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() async {
+                        date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime(1900),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+                      });
+                    },
                   ),
-                  const Text(
-                    'Date de naissance',
-                    //style: TextStyle(color: Colors.red),
+                  Text(
+                    date == null
+                        ? 'Date de naissance'
+                        : date.toString().split(' ')[0],
                   ),
                 ],
               ),
@@ -200,8 +211,9 @@ class _ProfilCreationState extends State<ProfilCreation> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: const EdgeInsets.all(20),
+                  minimumSize: const Size(200, 50),
                   backgroundColor: Colors.red,
+                  elevation: 10,
                 ),
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
