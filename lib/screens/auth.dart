@@ -1,91 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sps_mobile/screens/login.dart';
 import 'package:sps_mobile/screens/sign_up.dart';
 
-class Auth extends StatelessWidget {
-  const Auth({super.key});
+class Auth extends StatefulWidget {
+  const Auth({super.key, required this.signIn});
+
+  final bool signIn;
+
+  @override
+  State<Auth> createState() {
+    return _AuthState();
+  }
+}
+
+class _AuthState extends State<Auth> {
+  bool signIn = true;
+  @override
+  void initState() {
+    super.initState();
+    signIn = widget.signIn;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            'assets/images/blood1.png',
-            height: 300,
-            width: double.infinity,
-          ),
-          const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              'Prêt à rejoindre la communauté des donneurs ?',
-              textAlign: TextAlign.left,
-              style: GoogleFonts.roboto(
-                textStyle: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 50),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              elevation: 5,
-              minimumSize: const Size(200, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (ctx) => const SignUp(),
-                ),
-              );
-            },
-            child: Text(
-              'S\'inscrire',
-              style: GoogleFonts.roboto(
-                textStyle: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          OutlinedButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (ctx) => const Login(),
-                ),
-              );
-            },
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(width: 2, color: Colors.red),
-              minimumSize: const Size(200, 50),
-            ),
-            child: Text(
-              'Se connecter',
-              style: GoogleFonts.roboto(
-                textStyle: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            signIn ? const Login() : const SignUp(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                signIn
+                    ? const Text('Vous n\'avez pas de compte ?')
+                    : const Text('Vous avez deja un compte ?'),
+                signIn
+                    ? TextButton(
+                        onPressed: () {
+                          setState(() {
+                            signIn = false;
+                          });
+                        },
+                        child: const Text(
+                          'S\'inscrire',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      )
+                    : TextButton(
+                        onPressed: () {
+                          setState(() {
+                            signIn = true;
+                          });
+                        },
+                        child: const Text(
+                          'Connectez vous',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,25 +1,35 @@
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sps_mobile/screens/sign_up.dart';
-import 'package:sps_mobile/screens/tabs.dart';
+//import 'package:sps_mobile/screens/main_page.dart';
+//import 'package:sps_mobile/screens/tabs.dart';
+//import 'package:sps_mobile/screens/tabs.dart';
+import 'package:sps_mobile/services/authentication.dart';
+//import 'package:sps_mobile/screens/sign_up.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return SingleChildScrollView(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Connectez - vous',
               style: GoogleFonts.openSans(
-                textStyle: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 100),
@@ -32,11 +42,13 @@ class Login extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  controller: emailController,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   cursorColor: Colors.red,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     icon: Icon(
                       Icons.mail_outline,
                       size: 40,
@@ -58,18 +70,22 @@ class Login extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  controller: passwordController,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                  obscureText: true,
                   cursorColor: Colors.red,
-                  decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.lock_outline_rounded,
-                        size: 40,
-                        color: Colors.red,
-                      ),
-                      hintText: 'Mot de passe',
-                      border: InputBorder.none),
+                  decoration: const InputDecoration(
+                    icon: Icon(
+                      Icons.lock_outline_rounded,
+                      size: 40,
+                      color: Colors.red,
+                    ),
+                    hintText: 'Mot de passe',
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
             ),
@@ -82,11 +98,11 @@ class Login extends StatelessWidget {
                 color: Colors.red,
               ),
               child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (ctx) => const Tabs(),
-                    ),
+                onPressed: () async {
+                  await Authentication().signInWithEmailAndPassword(
+                    emailController.text,
+                    passwordController.text,
+                    context,
                   );
                 },
                 child: Text(
@@ -122,12 +138,8 @@ class Login extends StatelessWidget {
                   ),
                   const SizedBox(width: 20),
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (ctx) => const Tabs(),
-                        ),
-                      );
+                    onPressed: () async {
+                      await Authentication().signInWithGoogle(context);
                     },
                     child: Text(
                       'Continuez avec Google',
@@ -140,7 +152,7 @@ class Login extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
+            /* Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Vous n\'avez pas de compte ?'),
@@ -158,7 +170,7 @@ class Login extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ) */
           ],
         ),
       ),

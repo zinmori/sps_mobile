@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sps_mobile/data/histos.dart';
+import 'package:sps_mobile/services/firestore_service.dart';
 import 'package:sps_mobile/widgets/histo_item.dart';
 
 class HistoScreen extends StatelessWidget {
@@ -8,28 +8,49 @@ class HistoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: histos.length,
-              itemBuilder: (context, index) {
-                return HistoItem(
-                  date: histos[index]["date"] as String,
-                  centre: histos[index]["centre"] as String,
-                );
-              },
-            ),
-          ),
-          Text(
-            'Vous avez fait au total : ${histos.length} dons',
-            style:
-                GoogleFonts.openSans(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
+    return FutureBuilder(
+        future: PlanningService().getPlannings(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Erreur : ${snapshot.error}'),
+            );
+          } else if (snapshot.hasData && snapshot.data!.size == 0) {
+            return const Center(
+              child: Text('Aucun don effectué', style: TextStyle(fontSize: 20)),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.size,
+                      itemBuilder: (context, index) {
+                        return HistoItem(
+                          date: snapshot.data!.docs[index]["date"]
+                              .toString()
+                              .split(' ')[0],
+                          centre:
+                              snapshot.data!.docs[index]["centre"] as String,
+                        );
+                      },
+                    ),
+                  ),
+                  Text(
+                    'Vous avez fait au total : ${snapshot.data!.size} dons',
+                    style: GoogleFonts.openSans(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            );
+          }
+        });
   }
 }

@@ -1,15 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sps_mobile/screens/login.dart';
-import 'package:sps_mobile/screens/profil_creation.dart';
+//import 'package:sps_mobile/screens/login.dart';
+//import 'package:sps_mobile/screens/verify_email.dart';
+import 'package:sps_mobile/services/authentication.dart';
+import 'package:sps_mobile/services/firestore_service.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
   @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return SingleChildScrollView(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -35,11 +47,13 @@ class SignUp extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  controller: emailController,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   cursorColor: Colors.red,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     icon: Icon(
                       Icons.mail_outline,
                       size: 40,
@@ -61,11 +75,14 @@ class SignUp extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  controller: passwordController,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                  obscureText: true,
                   cursorColor: Colors.red,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       icon: Icon(
                         Icons.lock_outline_rounded,
                         size: 40,
@@ -86,18 +103,22 @@ class SignUp extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  controller: passwordConfirmController,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                  obscureText: true,
                   cursorColor: Colors.red,
-                  decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.lock_outline_rounded,
-                        size: 40,
-                        color: Colors.red,
-                      ),
-                      hintText: 'Confirmez votre mot de passe',
-                      border: InputBorder.none),
+                  decoration: const InputDecoration(
+                    icon: Icon(
+                      Icons.lock_outline_rounded,
+                      size: 40,
+                      color: Colors.red,
+                    ),
+                    hintText: 'Confirmez votre mot de passe',
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
             ),
@@ -110,11 +131,12 @@ class SignUp extends StatelessWidget {
                 color: Colors.red,
               ),
               child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (ctx) => const ProfilCreation(),
-                    ),
+                onPressed: () async {
+                  await Authentication().signUp(
+                    emailController.text,
+                    passwordController.text,
+                    passwordConfirmController.text,
+                    context,
                   );
                 },
                 child: Text(
@@ -152,11 +174,15 @@ class SignUp extends StatelessWidget {
                   ),
                   const SizedBox(width: 20),
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (ctx) => const ProfilCreation(),
-                        ),
+                    onPressed: () async {
+                      await Authentication().signInWithGoogle(context);
+                      await UserService().addUser(
+                        FirebaseAuth.instance.currentUser!.email,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
                       );
                     },
                     child: Text(
@@ -170,7 +196,7 @@ class SignUp extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
+            /* Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Vous avez déja un compte ?'),
@@ -188,7 +214,7 @@ class SignUp extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ) */
           ],
         ),
       ),

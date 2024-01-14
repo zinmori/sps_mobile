@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sps_mobile/screens/auth.dart';
+import 'package:sps_mobile/screens/choose_auth.dart';
+import 'package:sps_mobile/screens/main_page.dart';
 import 'package:sps_mobile/widgets/on_boarding_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,9 +29,14 @@ class _StartScreenState extends State<StartScreen> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const Auth(),
+                  builder: (context) =>
+                      FirebaseAuth.instance.currentUser == null
+                          ? const ChooseAuth()
+                          : const MainPage(),
                 ),
               );
+              /* print('""""""""""""""""""""""""""""""""""""""""""""');
+              print(FirebaseAuth.instance.currentUser); */
             },
             child: Text(
               'SKIP',
@@ -141,9 +148,14 @@ class _StartScreenState extends State<StartScreen> {
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => const Auth(),
+                              builder: (context) =>
+                                  FirebaseAuth.instance.currentUser == null
+                                      ? const ChooseAuth()
+                                      : const MainPage(),
                             ),
                           );
+                          /* print('""""""""""""""""""""""""""""""""""""""""""""');
+                          print(FirebaseAuth.instance.currentUser); */
                         },
                         child: Text(
                           'Débuter',

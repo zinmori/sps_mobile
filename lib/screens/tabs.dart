@@ -30,8 +30,8 @@ class _TabsState extends State<Tabs> {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.red,
-        elevation: 5,
-        scrolledUnderElevation: 10,
+        surfaceTintColor: Colors.white,
+        elevation: 10,
         title: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
