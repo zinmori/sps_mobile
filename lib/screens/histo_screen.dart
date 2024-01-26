@@ -25,7 +25,7 @@ class HistoScreen extends StatelessWidget {
             );
           } else {
             return Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
               child: Column(
                 children: [
                   Expanded(
@@ -33,7 +33,9 @@ class HistoScreen extends StatelessWidget {
                       itemCount: snapshot.data!.size,
                       itemBuilder: (context, index) {
                         return HistoItem(
-                          date: snapshot.data!.docs[index]["date"]
+                          date: DateTime.fromMillisecondsSinceEpoch(
+                                  snapshot.data!.docs[index]["date"].seconds *
+                                      1000)
                               .toString()
                               .split(' ')[0],
                           centre:

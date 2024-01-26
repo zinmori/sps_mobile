@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
-//import 'package:sps_mobile/screens/verify_email.dart';
 
+//import 'package:sps_mobile/services/firestore_service.dart';
+//import 'package:sps_mobile/screens/verify_email.dart';
 class Authentication {
   Future<UserCredential?> signInWithEmailAndPassword(
     String email,
@@ -33,16 +34,12 @@ class Authentication {
       Navigator.of(context).pop();
 
       if (userCredential.user != null && !userCredential.user!.emailVerified) {
-        /* Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const VerifyEmail(),
-          ),
-        ); */
         return null;
       }
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
       String message = '';
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         message = 'Email ou mot de passe incorrect';
@@ -79,6 +76,7 @@ class Authentication {
       await FirebaseAuth.instance.signInWithCredential(credential);
       Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.message!),
@@ -131,13 +129,6 @@ class Authentication {
         password: password,
       );
       Navigator.of(context).pop();
-      /* if (userCredential.user != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const VerifyEmail(),
-          ),
-        );
-      } */
       await UserService().addUser(
         FirebaseAuth.instance.currentUser!.email,
         null,
@@ -148,6 +139,7 @@ class Authentication {
       );
       return userCredential;
     } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
       String message = '';
       if (e.code == 'email-already-in-use') {
         message = 'Cet email est déjà utilisé';

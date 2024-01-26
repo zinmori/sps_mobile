@@ -47,7 +47,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -55,7 +55,10 @@ class _ProfilScreenState extends State<ProfilScreen> {
             //const SizedBox(height: 50),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(width: 2, color: Colors.red),
+                side: const BorderSide(
+                  width: 2,
+                  color: Color.fromARGB(255, 158, 23, 13),
+                ),
               ),
               onPressed: () async {
                 Map<String, dynamic> newData = await Navigator.of(context).push(
@@ -74,7 +77,10 @@ class _ProfilScreenState extends State<ProfilScreen> {
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.edit, color: Colors.red),
+                  Icon(
+                    Icons.edit,
+                    color: Color.fromARGB(255, 158, 23, 13),
+                  ),
                   Text('Modifier'),
                 ],
               ),
@@ -90,13 +96,13 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   ListTile(
                     leading: const Icon(
                       Icons.person,
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 158, 23, 13),
                       size: 40,
                     ),
                     title: Text(
                       'Nom',
                       style: GoogleFonts.openSans(
-                        color: Colors.red,
+                        color: const Color.fromARGB(255, 158, 23, 13),
                       ),
                     ),
                     subtitle: Text(nom ?? 'Inconnu',
@@ -105,12 +111,14 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   ListTile(
                     leading: const Icon(
                       Icons.person,
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 158, 23, 13),
                       size: 40,
                     ),
                     title: Text(
                       'Prénom',
-                      style: GoogleFonts.openSans(color: Colors.red),
+                      style: GoogleFonts.openSans(
+                        color: const Color.fromARGB(255, 158, 23, 13),
+                      ),
                     ),
                     subtitle: Text(prenom ?? 'Inconnu',
                         style: const TextStyle(fontSize: 18)),
@@ -118,12 +126,14 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   ListTile(
                     leading: const Icon(
                       Icons.calendar_month,
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 158, 23, 13),
                       size: 40,
                     ),
                     title: Text(
                       'Date de naissance',
-                      style: GoogleFonts.openSans(color: Colors.red),
+                      style: GoogleFonts.openSans(
+                        color: const Color.fromARGB(255, 158, 23, 13),
+                      ),
                     ),
                     subtitle: Text(date ?? 'Inconnu',
                         style: const TextStyle(fontSize: 18)),
@@ -131,12 +141,14 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   ListTile(
                     leading: const Icon(
                       Icons.female_rounded,
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 158, 23, 13),
                       size: 40,
                     ),
                     title: Text(
                       'Sexe',
-                      style: GoogleFonts.openSans(color: Colors.red),
+                      style: GoogleFonts.openSans(
+                        color: const Color.fromARGB(255, 158, 23, 13),
+                      ),
                     ),
                     subtitle: Text(sexe ?? 'Inconnu',
                         style: const TextStyle(fontSize: 18)),
@@ -144,12 +156,14 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   ListTile(
                     leading: const Icon(
                       Icons.bloodtype_rounded,
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 158, 23, 13),
                       size: 40,
                     ),
                     title: Text(
                       'Groupe sanguin',
-                      style: GoogleFonts.openSans(color: Colors.red),
+                      style: GoogleFonts.openSans(
+                        color: const Color.fromARGB(255, 158, 23, 13),
+                      ),
                     ),
                     subtitle: Text(sang ?? 'Inconnu',
                         style: const TextStyle(fontSize: 18)),
@@ -157,12 +171,14 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   ListTile(
                     leading: const Icon(
                       Icons.email_outlined,
-                      color: Colors.red,
+                      color: Color.fromARGB(255, 158, 23, 13),
                       size: 40,
                     ),
                     title: Text(
                       'Email',
-                      style: GoogleFonts.openSans(color: Colors.red),
+                      style: GoogleFonts.openSans(
+                        color: const Color.fromARGB(255, 158, 23, 13),
+                      ),
                     ),
                     subtitle: Text(FirebaseAuth.instance.currentUser!.email!,
                         style: const TextStyle(fontSize: 18)),
@@ -186,7 +202,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  backgroundColor: Colors.red,
+                  backgroundColor: const Color.fromARGB(255, 158, 23, 13),
                   elevation: 10,
                 ),
                 icon: const Icon(

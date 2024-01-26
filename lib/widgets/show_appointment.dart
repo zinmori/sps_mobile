@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
+import 'package:sps_mobile/widgets/alarm.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowAppointment extends StatefulWidget {
   const ShowAppointment({
@@ -32,7 +34,8 @@ class _ShowAppointmentState extends State<ShowAppointment> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('NON', style: TextStyle(color: Colors.red)),
+              child: const Text('NON',
+                  style: TextStyle(color: Color.fromARGB(255, 158, 23, 13))),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -46,7 +49,8 @@ class _ShowAppointmentState extends State<ShowAppointment> {
                 backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
               ),
-              child: const Text('OUI', style: TextStyle(color: Colors.red)),
+              child: const Text('OUI',
+                  style: TextStyle(color: Color.fromARGB(255, 158, 23, 13))),
             ),
           ],
         );
@@ -54,76 +58,130 @@ class _ShowAppointmentState extends State<ShowAppointment> {
     );
   }
 
+  void planifierRappel(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (BuildContext context) {
+        return Alarm(date: widget.date.toLocal().toString().split(' ')[0]);
+      },
+    );
+  }
+
+  _launchGoogleMaps() async {
+    String url =
+        'https://www.google.com/maps/search/?api=1&query=${widget.centre.replaceAll(' ', '+')}';
+
+    await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.inAppBrowserView,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Text(
-            'Votre prochain don est planifié sur le :',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.openSans(
-                textStyle: const TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            )),
-          ),
-          const SizedBox(height: 100),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.date_range_rounded,
-                color: Colors.red,
-                size: 100,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                widget.date.toLocal().toString().split(' ')[0],
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
-          const Text(
-            'à',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.location_on,
-                color: Colors.red,
-                size: 100,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                widget.centre,
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
-          IconButton.filled(
-            onPressed: _showDeleteDialog,
-            highlightColor: Colors.red,
+    return Stack(
+      children: [
+        Image.asset(
+          'assets/images/back.png',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        ),
+        Positioned(
+          top: 100,
+          left: MediaQuery.of(context).size.width / 2 - 50,
+          child: IconButton(
+            onPressed: _launchGoogleMaps,
             icon: const Icon(
-              Icons.delete_outline_rounded,
-              color: Colors.white,
-              size: 50,
+              Icons.location_on_outlined,
+              size: 100,
+              color: Color.fromARGB(255, 158, 23, 13),
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+        Positioned(
+          left: 10,
+          right: 10,
+          bottom: 20,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.red[50],
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 10,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    planifierRappel(context);
+                  },
+                  icon: const Icon(
+                    Icons.alarm_rounded,
+                    size: 50,
+                    color: Color.fromARGB(255, 158, 23, 13),
+                  ),
+                ),
+                Row(
+                  children: [
+                    const SizedBox(width: 20),
+                    const Icon(
+                      Icons.location_on_rounded,
+                      size: 50,
+                      color: Color.fromARGB(255, 158, 23, 13),
+                    ),
+                    const SizedBox(width: 20),
+                    Text(
+                      widget.centre,
+                      style: GoogleFonts.openSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const SizedBox(width: 20),
+                    const Icon(
+                      Icons.calendar_month_rounded,
+                      size: 50,
+                      color: Color.fromARGB(255, 158, 23, 13),
+                    ),
+                    const SizedBox(width: 20),
+                    Text(
+                      widget.date.toLocal().toString().split(' ')[0],
+                      style: GoogleFonts.openSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+                Center(
+                  child: IconButton(
+                    onPressed: _showDeleteDialog,
+                    icon: const Icon(
+                      Icons.delete_outline_rounded,
+                      size: 50,
+                      color: Color.fromARGB(255, 158, 23, 13),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

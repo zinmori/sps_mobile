@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
+import 'package:sps_mobile/services/notification_service.dart';
 
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
@@ -21,48 +22,68 @@ class _ScheduleState extends State<Schedule> {
   ];
 
   Future<void> _showConfirmationDialog() async {
+    final userDoc = await UserService().getUser();
+    Map<String, dynamic> data = userDoc.data()! as Map<String, dynamic>;
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirmation'),
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  'Votre prochain don est planifié sur le :${dateController.text}',
-                ),
-                const SizedBox(height: 10.0),
-                Text('Centre choisi : $selectedCentre'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Annuler', style: TextStyle(color: Colors.red)),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await PlanningService().addPlanning(
-                  DateTime.parse(dateController.text),
-                  selectedCentre,
-                );
-              },
-              style: ElevatedButton.styleFrom(
+        return data['sexe'] != null
+            ? AlertDialog(
+                title: const Text('Confirmation'),
                 backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
-              ),
-              child:
-                  const Text('Confirmer', style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        );
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text(
+                        'Votre prochain don est planifié sur le :${dateController.text}',
+                      ),
+                      const SizedBox(height: 10.0),
+                      Text('Centre choisi : $selectedCentre'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Annuler',
+                        style: TextStyle(color: Colors.red)),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await PlanningService().addPlanning(
+                        DateTime.parse(dateController.text),
+                        selectedCentre,
+                      );
+                      NotificationService().scheduleNotification(
+                        id: 4,
+                        title: 'Rappel',
+                        description:
+                            'Votre prochain don est prévu aujourd\'hui',
+                        scheduledDate: DateTime.parse(dateController.text),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      surfaceTintColor: Colors.white,
+                    ),
+                    child: const Text('Confirmer',
+                        style: TextStyle(color: Colors.red)),
+                  ),
+                ],
+              )
+            : const AlertDialog(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                content: SingleChildScrollView(
+                  child: Text(
+                    'Veuillez completer votre profil avant de planifier votre prochain don',
+                  ),
+                ),
+              );
       },
     );
   }
@@ -70,7 +91,7 @@ class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -80,7 +101,7 @@ class _ScheduleState extends State<Schedule> {
               textStyle: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.red,
+                color: Color.fromARGB(255, 158, 23, 13),
               ),
             ),
           ),
@@ -107,7 +128,7 @@ class _ScheduleState extends State<Schedule> {
                   padding: EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.calendar_today,
-                    color: Colors.red,
+                    color: Color.fromARGB(255, 158, 23, 13),
                     size: 40,
                   ),
                 ),
@@ -119,10 +140,28 @@ class _ScheduleState extends State<Schedule> {
               ),
               readOnly: true,
               onTap: () async {
+                final lastPlannning =
+                    await PlanningService().getLastPlanning().first;
+                DateTime nextDate = DateTime.now();
+                if (lastPlannning.docs.isNotEmpty) {
+                  final lastDate = DateTime.fromMillisecondsSinceEpoch(
+                      lastPlannning.docs.first.get('date').seconds * 1000);
+                  final user = await UserService().getUser();
+                  final userData = user.data() as Map<String, dynamic>;
+                  if (userData['sexe'] == 'Masculin') {
+                    if (lastPlannning.docs.first.get('honore') == true) {
+                      nextDate = lastDate.add(const Duration(days: 84));
+                    }
+                  } else {
+                    if (lastPlannning.docs.first.get('honore') == true) {
+                      nextDate = lastDate.add(const Duration(days: 112));
+                    }
+                  }
+                }
                 DateTime? selectedDate = await showDatePicker(
                   context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
+                  initialDate: nextDate,
+                  firstDate: nextDate,
                   lastDate: DateTime(2101),
                 );
 
@@ -146,11 +185,11 @@ class _ScheduleState extends State<Schedule> {
             ),
             child: DropdownButtonFormField(
               dropdownColor: Colors.white,
-              iconEnabledColor: Colors.red,
+              iconEnabledColor: const Color.fromARGB(255, 158, 23, 13),
               decoration: const InputDecoration(
                 icon: Icon(
                   Icons.location_on,
-                  color: Colors.red,
+                  color: Color.fromARGB(255, 158, 23, 13),
                   size: 50,
                 ),
                 border: InputBorder.none,
@@ -178,7 +217,7 @@ class _ScheduleState extends State<Schedule> {
             style: ElevatedButton.styleFrom(
               elevation: 5,
               fixedSize: const Size(150, 50),
-              backgroundColor: Colors.red,
+              backgroundColor: const Color.fromARGB(255, 158, 23, 13),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

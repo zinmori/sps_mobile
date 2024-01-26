@@ -35,7 +35,7 @@ class _PlanningState extends State<Planning> {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop();
                 showDialog<void>(
                   context: context,
@@ -50,9 +50,16 @@ class _PlanningState extends State<Planning> {
                     );
                   },
                 );
+                await PlanningService().updatePlanning(
+                  FirebaseAuth.instance.currentUser!.uid +
+                      date.toLocal().toString().split(' ')[0],
+                  {'honore': false},
+                );
               },
-              child: const Text('NON, je n\'ai pas pu',
-                  style: TextStyle(color: Colors.red)),
+              child: const Text(
+                'NON, je n\'ai pas pu',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -108,7 +115,8 @@ class _PlanningState extends State<Planning> {
       Map<String, dynamic> planningData =
           planning.docs[0].data() as Map<String, dynamic>;
       DateTime date = planningData['date'].toDate();
-      if (DateTime.now().isAfter(date.add(const Duration(days: 1)))) {
+      if (DateTime.now().isAfter(date.add(const Duration(days: 1))) &&
+          planningData['honore'] == null) {
         _showVerificationDialog(date);
       }
     }

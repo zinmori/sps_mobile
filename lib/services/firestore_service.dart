@@ -55,7 +55,7 @@ class PlanningService {
       'user': FirebaseAuth.instance.currentUser!.uid,
       'date': date,
       'centre': centre,
-      'honore': false,
+      'honore': null,
     });
   }
 

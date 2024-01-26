@@ -14,10 +14,7 @@ class MainPage extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, userSnapshot) {
-          if (userSnapshot.hasData && userSnapshot.data!.emailVerified ||
-              userSnapshot.hasData &&
-                  userSnapshot.data!.providerData[0].providerId ==
-                      'google.com') {
+          if (userSnapshot.hasData && userSnapshot.data!.emailVerified) {
             return const Tabs();
           } else if (userSnapshot.hasData &&
               !userSnapshot.data!.emailVerified) {

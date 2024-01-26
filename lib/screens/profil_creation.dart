@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+//import 'package:sps_mobile/provider/first_sign.dart';
+//import 'package:sps_mobile/screens/tabs.dart';
 //import 'package:sps_mobile/screens/tabs.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
 
@@ -275,7 +277,6 @@ class _ProfilCreationState extends State<ProfilCreation> {
                           selectedGenre == 1 ? 'Masculin' : 'Féminin',
                           selectedValue,
                         );
-
                         Navigator.of(context).pop({
                           'nom': nomController.text,
                           'prenom': prenomController.text,

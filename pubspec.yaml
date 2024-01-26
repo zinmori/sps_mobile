@@ -47,6 +47,9 @@ dependencies:
   cloud_firestore: ^4.14.0
   google_sign_in: ^6.1.6
   firebase_core: ^2.24.2
+  flutter_local_notifications: ^16.3.0
+  flutter_launcher_icons: ^0.13.1
+  url_launcher: ^6.2.4
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +98,7 @@ flutter:
     - assets/images/logo1.png
     - assets/images/blood-donation.png
     - assets/images/superblood.png
+    - assets/images/back.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -130,3 +134,8 @@ flutter_native_splash:
   android_12:
     image: "assets/images/splash.png"
     icon_background_color: "#ffffff"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"

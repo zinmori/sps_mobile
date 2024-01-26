@@ -30,8 +30,9 @@ class _TabsState extends State<Tabs> {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.red,
-        surfaceTintColor: Colors.white,
-        elevation: 10,
+        backgroundColor: Colors.red[20],
+        surfaceTintColor: Colors.red[20],
+        elevation: 0,
         title: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +41,7 @@ class _TabsState extends State<Tabs> {
               Text(
                 titles[currenTPageIndex],
                 style: GoogleFonts.openSans(
-                  color: Colors.red,
+                  color: Colors.redAccent[700],
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -60,42 +61,52 @@ class _TabsState extends State<Tabs> {
       ),
       bottomNavigationBar: NavigationBar(
         shadowColor: Colors.red,
-        indicatorColor: Colors.red,
-        surfaceTintColor: Colors.white,
-        elevation: 10,
+        indicatorColor: const Color.fromARGB(255, 158, 23, 13),
+        backgroundColor: Colors.red[20],
+        //elevation: 0,
         destinations: [
           NavigationDestination(
             icon: Icon(
               Icons.calendar_month_rounded,
-              color: currenTPageIndex == 0 ? Colors.white : Colors.red,
+              color: currenTPageIndex == 0
+                  ? Colors.white
+                  : const Color.fromARGB(255, 158, 23, 13),
             ),
             label: 'Planning',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.info_rounded,
-              color: currenTPageIndex == 1 ? Colors.white : Colors.red,
+              color: currenTPageIndex == 1
+                  ? Colors.white
+                  : const Color.fromARGB(255, 158, 23, 13),
             ),
             label: 'Info',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.history_rounded,
-              color: currenTPageIndex == 2 ? Colors.white : Colors.red,
+              color: currenTPageIndex == 2
+                  ? Colors.white
+                  : const Color.fromARGB(255, 158, 23, 13),
             ),
             label: 'Historique',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.warning_rounded,
-              color: currenTPageIndex == 3 ? Colors.white : Colors.red,
+              color: currenTPageIndex == 3
+                  ? Colors.white
+                  : const Color.fromARGB(255, 158, 23, 13),
             ),
             label: 'Urgences',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.person_rounded,
-              color: currenTPageIndex == 4 ? Colors.white : Colors.red,
+              color: currenTPageIndex == 4
+                  ? Colors.white
+                  : const Color.fromARGB(255, 158, 23, 13),
             ),
             label: 'Profil',
           ),

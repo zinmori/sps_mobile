@@ -30,7 +30,7 @@ class InfoDetail extends StatelessWidget {
                 infos[id]["title"] as String,
                 style: GoogleFonts.openSans(
                   textStyle: const TextStyle(
-                    color: Colors.red,
+                    color: Color.fromARGB(255, 158, 23, 13),
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -38,17 +38,14 @@ class InfoDetail extends StatelessWidget {
               ),
             ),
             const Divider(
-              color: Colors.red,
+              color: Color.fromARGB(255, 158, 23, 13),
               indent: 40,
               endIndent: 40,
               thickness: 2,
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                infos[id]["description"] as String,
-                style: const TextStyle(fontSize: 14.0),
-              ),
+              padding: const EdgeInsets.all(20),
+              child: infos[id]["description"] as Widget,
             ),
           ],
         ),
