@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+final fcm = FirebaseMessaging.instance;
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationPlugin =
@@ -66,10 +69,15 @@ class NotificationService {
         scheduledDate,
         tz.local,
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
       await notificationDetails(),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+  }
+
+  Future initUrgenceNotification() async {
+    await fcm.requestPermission();
+    await fcm.subscribeToTopic('urgence');
   }
 }

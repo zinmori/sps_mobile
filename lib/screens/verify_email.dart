@@ -59,13 +59,15 @@ class _VerifyEmailState extends State<VerifyEmail> {
         canResendEmail = true;
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString(),
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e.toString(),
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 

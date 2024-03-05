@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sps_mobile/screens/histo_screen.dart';
 import 'package:sps_mobile/screens/info_screen.dart';
-import 'package:sps_mobile/screens/planning.dart';
+import 'package:sps_mobile/screens/planning_screen.dart';
 import 'package:sps_mobile/screens/profil_screen.dart';
 import 'package:sps_mobile/screens/urgence_screen.dart';
+import 'package:sps_mobile/services/firestore_service.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -49,10 +50,9 @@ class _TabsState extends State<Tabs> {
           ),
         ),
       ),
-      //backgroundColor: Colors.white,
       body: Center(
         child: [
-          const Planning(),
+          const PlanningScreen(),
           const InfoScreen(),
           const HistoScreen(),
           const UrgenceScreen(),
@@ -63,7 +63,6 @@ class _TabsState extends State<Tabs> {
         shadowColor: Colors.red,
         indicatorColor: const Color.fromARGB(255, 158, 23, 13),
         backgroundColor: Colors.red[20],
-        //elevation: 0,
         destinations: [
           NavigationDestination(
             icon: Icon(
@@ -93,12 +92,22 @@ class _TabsState extends State<Tabs> {
             label: 'Historique',
           ),
           NavigationDestination(
-            icon: Icon(
-              Icons.warning_rounded,
-              color: currenTPageIndex == 3
-                  ? Colors.white
-                  : const Color.fromARGB(255, 158, 23, 13),
-            ),
+            icon: StreamBuilder(
+                stream: UrgenceService().getUrgences(),
+                builder: (context, snapshot) {
+                  return Badge(
+                    label: Text(snapshot.data!.docs.length.toString()),
+                    isLabelVisible: snapshot.data!.docs.isNotEmpty,
+                    backgroundColor: Colors.red[900],
+                    textColor: Colors.white,
+                    child: Icon(
+                      Icons.warning_rounded,
+                      color: currenTPageIndex == 3
+                          ? Colors.white
+                          : const Color.fromARGB(255, 158, 23, 13),
+                    ),
+                  );
+                }),
             label: 'Urgences',
           ),
           NavigationDestination(

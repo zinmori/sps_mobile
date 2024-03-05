@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'package:sps_mobile/provider/first_sign.dart';
-//import 'package:sps_mobile/screens/tabs.dart';
-//import 'package:sps_mobile/screens/tabs.dart';
+import 'package:sps_mobile/models/giver.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
 
 class ProfilCreation extends StatefulWidget {
@@ -78,7 +76,6 @@ class _ProfilCreationState extends State<ProfilCreation> {
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 2,
-                    //color: Colors.red,
                   ),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -91,7 +88,6 @@ class _ProfilCreationState extends State<ProfilCreation> {
                     decoration: const InputDecoration(
                       hintText: 'Nom',
                       border: InputBorder.none,
-                      //hintStyle: TextStyle(color: Colors.red),
                     ),
                   ),
                 ),
@@ -235,7 +231,6 @@ class _ProfilCreationState extends State<ProfilCreation> {
                             });
                           },
                         ),
-                        //Text('${listSanguin[index]}'),
                         Image.asset(
                           alignment: Alignment.topLeft,
                           'assets/images/${listSanguin[index].toLowerCase()}.png',
@@ -256,7 +251,6 @@ class _ProfilCreationState extends State<ProfilCreation> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        //minimumSize: const Size(200, 50),
                         backgroundColor: Colors.red,
                         elevation: 10,
                       ),
@@ -270,21 +264,25 @@ class _ProfilCreationState extends State<ProfilCreation> {
                           return;
                         }
                         await UserService().addUser(
-                          FirebaseAuth.instance.currentUser!.email!,
-                          nomController.text,
-                          prenomController.text,
-                          date!,
-                          selectedGenre == 1 ? 'Masculin' : 'Féminin',
-                          selectedValue,
+                          Giver(
+                            email: FirebaseAuth.instance.currentUser!.email!,
+                            nom: nomController.text,
+                            prenom: prenomController.text,
+                            dateNaissance: date!,
+                            sexe: selectedGenre == 1 ? 'Masculin' : 'Féminin',
+                            groupeSanguin: selectedValue,
+                          ),
                         );
-                        Navigator.of(context).pop({
-                          'nom': nomController.text,
-                          'prenom': prenomController.text,
-                          'date_naissance':
-                              date!.toLocal().toString().split(' ')[0],
-                          'sexe': selectedGenre == 1 ? 'Masculin' : 'Féminin',
-                          'groupe_sanguin': selectedValue,
-                        });
+                        if (mounted) {
+                          Navigator.of(context).pop({
+                            'nom': nomController.text,
+                            'prenom': prenomController.text,
+                            'date_naissance':
+                                date!.toLocal().toString().split(' ')[0],
+                            'sexe': selectedGenre == 1 ? 'Masculin' : 'Féminin',
+                            'groupe_sanguin': selectedValue,
+                          });
+                        }
                       },
                       child: Text(
                         'Confirmer',

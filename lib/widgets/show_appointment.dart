@@ -20,6 +20,20 @@ class ShowAppointment extends StatefulWidget {
 }
 
 class _ShowAppointmentState extends State<ShowAppointment> {
+  late List<Map<String, dynamic>> centres = [];
+  setData() async {
+    final data = await CentreService().getCentres();
+    setState(() {
+      centres = data.docs.map((e) => e.data() as Map<String, dynamic>).toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setData();
+  }
+
   Future<void> _showDeleteDialog() async {
     return showDialog<void>(
       context: context,
@@ -68,9 +82,9 @@ class _ShowAppointmentState extends State<ShowAppointment> {
     );
   }
 
-  _launchGoogleMaps() async {
-    String url =
-        'https://www.google.com/maps/search/?api=1&query=${widget.centre.replaceAll(' ', '+')}';
+  _launchGoogleMaps(String centre) async {
+    final url = centres.firstWhere(
+        (centre) => centre['nom'] as String == widget.centre)['location'];
 
     await launchUrl(
       Uri.parse(url),
@@ -92,7 +106,9 @@ class _ShowAppointmentState extends State<ShowAppointment> {
           top: 100,
           left: MediaQuery.of(context).size.width / 2 - 50,
           child: IconButton(
-            onPressed: _launchGoogleMaps,
+            onPressed: () {
+              _launchGoogleMaps(widget.centre);
+            },
             icon: const Icon(
               Icons.location_on_outlined,
               size: 100,
@@ -138,11 +154,13 @@ class _ShowAppointmentState extends State<ShowAppointment> {
                       color: Color.fromARGB(255, 158, 23, 13),
                     ),
                     const SizedBox(width: 20),
-                    Text(
-                      widget.centre,
-                      style: GoogleFonts.openSans(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Text(
+                        widget.centre,
+                        style: GoogleFonts.openSans(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

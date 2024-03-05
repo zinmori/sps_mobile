@@ -1,11 +1,9 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-//import 'package:sps_mobile/screens/main_page.dart';
 import 'package:sps_mobile/screens/profil_creation.dart';
 import 'package:sps_mobile/services/authentication.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
+import 'package:sps_mobile/widgets/detail_person.dart';
 
 class ProfilScreen extends StatefulWidget {
   const ProfilScreen({super.key});
@@ -52,7 +50,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            //const SizedBox(height: 50),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(
@@ -93,96 +90,30 @@ class _ProfilScreenState extends State<ProfilScreen> {
               ),
               child: Column(
                 children: [
-                  ListTile(
-                    leading: const Icon(
-                      Icons.person,
-                      color: Color.fromARGB(255, 158, 23, 13),
-                      size: 40,
-                    ),
-                    title: Text(
-                      'Nom',
-                      style: GoogleFonts.openSans(
-                        color: const Color.fromARGB(255, 158, 23, 13),
-                      ),
-                    ),
-                    subtitle: Text(nom ?? 'Inconnu',
-                        style: const TextStyle(fontSize: 18)),
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.person,
-                      color: Color.fromARGB(255, 158, 23, 13),
-                      size: 40,
-                    ),
-                    title: Text(
-                      'Prénom',
-                      style: GoogleFonts.openSans(
-                        color: const Color.fromARGB(255, 158, 23, 13),
-                      ),
-                    ),
-                    subtitle: Text(prenom ?? 'Inconnu',
-                        style: const TextStyle(fontSize: 18)),
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.calendar_month,
-                      color: Color.fromARGB(255, 158, 23, 13),
-                      size: 40,
-                    ),
-                    title: Text(
-                      'Date de naissance',
-                      style: GoogleFonts.openSans(
-                        color: const Color.fromARGB(255, 158, 23, 13),
-                      ),
-                    ),
-                    subtitle: Text(date ?? 'Inconnu',
-                        style: const TextStyle(fontSize: 18)),
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.female_rounded,
-                      color: Color.fromARGB(255, 158, 23, 13),
-                      size: 40,
-                    ),
-                    title: Text(
-                      'Sexe',
-                      style: GoogleFonts.openSans(
-                        color: const Color.fromARGB(255, 158, 23, 13),
-                      ),
-                    ),
-                    subtitle: Text(sexe ?? 'Inconnu',
-                        style: const TextStyle(fontSize: 18)),
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.bloodtype_rounded,
-                      color: Color.fromARGB(255, 158, 23, 13),
-                      size: 40,
-                    ),
-                    title: Text(
-                      'Groupe sanguin',
-                      style: GoogleFonts.openSans(
-                        color: const Color.fromARGB(255, 158, 23, 13),
-                      ),
-                    ),
-                    subtitle: Text(sang ?? 'Inconnu',
-                        style: const TextStyle(fontSize: 18)),
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.email_outlined,
-                      color: Color.fromARGB(255, 158, 23, 13),
-                      size: 40,
-                    ),
-                    title: Text(
-                      'Email',
-                      style: GoogleFonts.openSans(
-                        color: const Color.fromARGB(255, 158, 23, 13),
-                      ),
-                    ),
-                    subtitle: Text(FirebaseAuth.instance.currentUser!.email!,
-                        style: const TextStyle(fontSize: 18)),
-                  ),
+                  DetailPerson(
+                      icon: Icons.person,
+                      title: 'Nom',
+                      value: nom ?? 'Inconnu'),
+                  DetailPerson(
+                      icon: Icons.person,
+                      title: 'Prénom',
+                      value: prenom ?? 'Inconnu'),
+                  DetailPerson(
+                      icon: Icons.calendar_month,
+                      title: 'Date de naissance',
+                      value: date ?? 'Inconnu'),
+                  DetailPerson(
+                      icon: Icons.female_rounded,
+                      title: 'Sexe',
+                      value: sexe ?? 'Inconnu'),
+                  DetailPerson(
+                      icon: Icons.bloodtype_rounded,
+                      title: 'Groupe sanguin',
+                      value: sang ?? 'Inconnu'),
+                  DetailPerson(
+                      icon: Icons.email_outlined,
+                      title: 'Email',
+                      value: FirebaseAuth.instance.currentUser!.email!),
                 ],
               ),
             ),
@@ -191,11 +122,6 @@ class _ProfilScreenState extends State<ProfilScreen> {
               child: ElevatedButton.icon(
                 onPressed: () async {
                   await Authentication().signOut();
-                  /* Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (ctx) => const MainPage(),
-                        ),
-                      ); */
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(200, 50),

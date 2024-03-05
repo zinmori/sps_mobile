@@ -1,28 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter/services.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sps_mobile/models/giver.dart';
+import 'package:sps_mobile/models/planning.dart';
+import 'package:sps_mobile/services/notification_service.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class UserService {
   final CollectionReference _usersCollection = _firestore.collection('users');
 
-  Future<void> addUser(
-    String? email,
-    String? nom,
-    String? prenom,
-    DateTime? dateNaissance,
-    String? sexe,
-    String? groupeSanguin,
-  ) async {
+  Future<void> addUser(Giver giver) async {
     await _usersCollection.doc(FirebaseAuth.instance.currentUser!.uid).set({
-      'email': email,
-      'nom': nom,
-      'prenom': prenom,
-      'date_naissance': dateNaissance,
-      'sexe': sexe,
-      'groupe_sanguin': groupeSanguin,
+      'email': giver.email,
+      'nom': giver.nom,
+      'prenom': giver.prenom,
+      'date_naissance': giver.dateNaissance,
+      'sexe': giver.sexe,
+      'groupe_sanguin': giver.groupeSanguin,
     });
   }
 
@@ -47,16 +41,21 @@ class PlanningService {
   final CollectionReference _planningsCollection =
       _firestore.collection('plannings');
 
-  Future<void> addPlanning(DateTime date, String centre) async {
+  Future<void> addPlanning(Planning planning) async {
     await _planningsCollection
-        .doc(FirebaseAuth.instance.currentUser!.uid +
-            date.toLocal().toString().split(' ')[0])
+        .doc(planning.user + planning.date.toLocal().toString().split(' ')[0])
         .set({
-      'user': FirebaseAuth.instance.currentUser!.uid,
-      'date': date,
-      'centre': centre,
-      'honore': null,
+      'user': planning.user,
+      'date': planning.date,
+      'centre': planning.centre,
+      'honore': planning.honore,
     });
+    NotificationService().scheduleNotification(
+      id: 4,
+      title: 'Rappel',
+      description: 'Votre prochain don est prévu aujourd\'hui',
+      scheduledDate: planning.date,
+    );
   }
 
   Future<QuerySnapshot> getPlannings() async {
@@ -87,51 +86,18 @@ class PlanningService {
 }
 
 class UrgenceService {
-  final CollectionReference _urgencesCollection =
-      _firestore.collection('urgences');
-
-  Future<void> addUrgence(String centre, String sang) async {
-    await _urgencesCollection.add({
-      'centre': centre,
-      'sang': sang,
-    });
-  }
-
   Stream<QuerySnapshot> getUrgences() {
-    return _urgencesCollection.snapshots();
-  }
-
-  Future<void> updateUrgence(
-      String urgenceId, Map<String, dynamic> data) async {
-    await _urgencesCollection.doc(urgenceId).update(data);
-  }
-
-  Future<void> deleteUrgence(String urgenceId) async {
-    await _urgencesCollection.doc(urgenceId).delete();
+    final urgences = _firestore
+        .collection('urgences')
+        .where('satisfait', isEqualTo: false)
+        .snapshots();
+    return urgences;
   }
 }
 
-/* class InfoService {
-  final CollectionReference _infosCollection = _firestore.collection('infos');
-
-  Future<void> addInfo(String image, String titre, String contenu) async {
-    await _infosCollection.add({
-      'image': image,
-      'titre': titre,
-      'contenu': contenu,
-    });
-  }
-
-  Stream<QuerySnapshot> getInfos() {
-    return _infosCollection.snapshots();
-  }
-
-  Future<void> updateInfo(String infoId, Map<String, dynamic> data) async {
-    await _infosCollection.doc(infoId).update(data);
-  }
-
-  Future<void> deleteInfo(String infoId) async {
-    await _infosCollection.doc(infoId).delete();
+class CentreService {
+  Future<QuerySnapshot> getCentres() async {
+    final centres = await _firestore.collection('centres').get();
+    return centres;
   }
 }
- */

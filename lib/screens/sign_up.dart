@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sps_mobile/models/giver.dart';
 //import 'package:sps_mobile/screens/login.dart';
 //import 'package:sps_mobile/screens/verify_email.dart';
 import 'package:sps_mobile/services/authentication.dart';
@@ -176,14 +177,9 @@ class _SignUpState extends State<SignUp> {
                   TextButton(
                     onPressed: () async {
                       await Authentication().signInWithGoogle(context);
-                      await UserService().addUser(
-                        FirebaseAuth.instance.currentUser!.email,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                      );
+                      Giver giver = Giver(
+                          email: FirebaseAuth.instance.currentUser!.email);
+                      await UserService().addUser(giver);
                     },
                     child: Text(
                       'Continuez avec Google',
@@ -196,25 +192,6 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
             ),
-            /* Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Vous avez déja un compte ?'),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (ctx) => const Login(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Se connecter',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ],
-            ) */
           ],
         ),
       ),

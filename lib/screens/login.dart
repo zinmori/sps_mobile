@@ -152,25 +152,6 @@ class _LoginState extends State<Login> {
                 ],
               ),
             ),
-            /* Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Vous n\'avez pas de compte ?'),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (ctx) => const SignUp(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'S\'inscrire',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ],
-            ) */
           ],
         ),
       ),

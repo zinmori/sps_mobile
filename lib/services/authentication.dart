@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sps_mobile/models/giver.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
 
-//import 'package:sps_mobile/services/firestore_service.dart';
-//import 'package:sps_mobile/screens/verify_email.dart';
 class Authentication {
   Future<UserCredential?> signInWithEmailAndPassword(
     String email,
@@ -31,7 +30,7 @@ class Authentication {
         email: email,
         password: password,
       );
-      Navigator.of(context).pop();
+      if (context.mounted) Navigator.of(context).pop();
 
       if (userCredential.user != null && !userCredential.user!.emailVerified) {
         return null;
@@ -39,18 +38,20 @@ class Authentication {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      Navigator.of(context).pop();
+      if (context.mounted) Navigator.of(context).pop();
       String message = '';
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         message = 'Email ou mot de passe incorrect';
       } else {
         message = e.message!;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+          ),
+        );
+      }
       return null;
     }
   }
@@ -74,14 +75,16 @@ class Authentication {
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
-      Navigator.of(context).pop();
+      if (context.mounted) Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.message!),
-        ),
-      );
+      if (context.mounted) Navigator.of(context).pop();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message!),
+          ),
+        );
+      }
     }
   }
 
@@ -128,18 +131,13 @@ class Authentication {
         email: email.trim(),
         password: password,
       );
-      Navigator.of(context).pop();
-      await UserService().addUser(
-        FirebaseAuth.instance.currentUser!.email,
-        null,
-        null,
-        null,
-        null,
-        null,
-      );
+      if (context.mounted) Navigator.of(context).pop();
+      await UserService().addUser(Giver(
+        email: FirebaseAuth.instance.currentUser!.email,
+      ));
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      Navigator.of(context).pop();
+      if (context.mounted) Navigator.of(context).pop();
       String message = '';
       if (e.code == 'email-already-in-use') {
         message = 'Cet email est déjà utilisé';
@@ -150,11 +148,13 @@ class Authentication {
       } else {
         message = e.message!;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+          ),
+        );
+      }
       return null;
     }
   }

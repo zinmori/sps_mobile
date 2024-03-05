@@ -15,6 +15,7 @@ Future main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   NotificationService().initNotification();
+  NotificationService().initUrgenceNotification();
   tz.initializeTimeZones();
   runApp(
     ProviderScope(

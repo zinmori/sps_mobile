@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sps_mobile/models/planning.dart';
+import 'package:sps_mobile/services/firestore_service.dart';
 
 class UrgenceItem extends StatelessWidget {
   const UrgenceItem({
@@ -16,7 +19,6 @@ class UrgenceItem extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Card(
         elevation: 10,
-        //surfaceTintColor: Colors.white,
         child: Row(
           children: [
             const Icon(
@@ -24,7 +26,6 @@ class UrgenceItem extends StatelessWidget {
               size: 100,
               color: Colors.red,
             ),
-            //const SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -48,16 +49,25 @@ class UrgenceItem extends StatelessWidget {
                       lastDate: DateTime.now().add(const Duration(days: 7)),
                     );
                     if (selectedDate != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red[50],
-                          content: Text(
-                            'Votre don a été planifié avec succès !',
-                            style: GoogleFonts.openSans(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red[50],
+                            content: Text(
+                              'Votre don a été planifié avec succès !',
+                              style: GoogleFonts.openSans(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
+                        );
+                      }
+                      PlanningService().addPlanning(
+                        Planning(
+                          user: FirebaseAuth.instance.currentUser!.email!,
+                          date: selectedDate,
+                          centre: centre,
                         ),
                       );
                     }

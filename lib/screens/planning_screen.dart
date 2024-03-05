@@ -5,16 +5,16 @@ import 'package:sps_mobile/services/firestore_service.dart';
 import 'package:sps_mobile/widgets/show_appointment.dart';
 import 'package:sps_mobile/widgets/schedule.dart';
 
-class Planning extends StatefulWidget {
-  const Planning({super.key});
+class PlanningScreen extends StatefulWidget {
+  const PlanningScreen({super.key});
 
   @override
-  State<Planning> createState() {
-    return _PlanningState();
+  State<PlanningScreen> createState() {
+    return _PlanningScreenState();
   }
 }
 
-class _PlanningState extends State<Planning> {
+class _PlanningScreenState extends State<PlanningScreen> {
   bool hasAppointment = false;
 
   Future<void> _showVerificationDialog(DateTime date) async {
@@ -23,10 +23,9 @@ class _PlanningState extends State<Planning> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          //title: const Text('Confirmation'),
+          title: const Text('Confirmation'),
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
-
           content: Text(
             'La date programmée précédemment est déjà passée avez vous honoré votre engagement ?',
             style: GoogleFonts.openSans(
