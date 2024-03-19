@@ -1,11 +1,7 @@
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'package:sps_mobile/screens/main_page.dart';
-//import 'package:sps_mobile/screens/tabs.dart';
-//import 'package:sps_mobile/screens/tabs.dart';
+import 'package:sps_mobile/screens/reset_password.dart';
 import 'package:sps_mobile/services/authentication.dart';
-//import 'package:sps_mobile/screens/sign_up.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -89,7 +85,27 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ResetPassword(),
+                  ),
+                );
+              },
+              child: Text(
+                'Mot de passe oublié ?',
+                style: GoogleFonts.openSans(
+                  textStyle: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      decoration: TextDecoration.underline),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             Container(
               width: 180,
               height: 50,
@@ -100,7 +116,7 @@ class _LoginState extends State<Login> {
               child: TextButton(
                 onPressed: () async {
                   await Authentication().signInWithEmailAndPassword(
-                    emailController.text,
+                    emailController.text.trim(),
                     passwordController.text,
                     context,
                   );

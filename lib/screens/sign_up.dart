@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sps_mobile/models/giver.dart';
-//import 'package:sps_mobile/screens/login.dart';
-//import 'package:sps_mobile/screens/verify_email.dart';
 import 'package:sps_mobile/services/authentication.dart';
 import 'package:sps_mobile/services/firestore_service.dart';
 
@@ -134,7 +132,7 @@ class _SignUpState extends State<SignUp> {
               child: TextButton(
                 onPressed: () async {
                   await Authentication().signUp(
-                    emailController.text,
+                    emailController.text.trim(),
                     passwordController.text,
                     passwordConfirmController.text,
                     context,
